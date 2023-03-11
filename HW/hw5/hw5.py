@@ -39,7 +39,7 @@ def read(conn):
         print(error)
 
 def update(conn, id, age, marks):
-    sql = '''UPDATE user SET age=?, marks=? WHERE id=?'''
+    sql = '''UPDATE user SET marks=?, age=? WHERE id=?'''
     try:
         cursor = conn.cursor()
         cursor.execute(sql, (id, age, marks))
@@ -47,9 +47,18 @@ def update(conn, id, age, marks):
     except error:
         print(error)
 
+def delete(conn, id):
+    sql = '''DELETE FROM user WHERE id=?'''
+    try:
+        cursor = conn.cursor()
+        cursor.execute(sql, str(id))
+        conn.commit()
+    except error:
+        print(error)
 
 sql_create = """
 CREATE TABLE user(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
 name VARCHAR(20) NOT NULL,
 age DATE,
 marks DOUBLE (2,1) NOT NULL DEFAULT 0.0,
@@ -65,6 +74,6 @@ if connection is not None:
     print('все отлично')
     # create_table(connection, sql_create)
     # create_student(connection, ('emir', '2007-10-12', 3.9, 'student'))
-    update(connection, 3, '2009-12-10', 4.5)
-
-read(connection)
+    # update(connection, 5.0, '2002-11-20', 4)
+    delete(connection, 2)
+    read(connection)
